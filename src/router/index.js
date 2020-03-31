@@ -6,6 +6,7 @@ import Overview from "../views/Overview.vue";
 import Profile from "../views/Profile.vue";
 import Orders from "../views/Orders.vue";
 import Products from "../views/Products.vue";
+import LoginAdmin from "../views/LoginAdmin.vue";
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/login-admin",
+    name: "LoginAdmin",
+    component: LoginAdmin,
   },
   {
     path: "/admin",
