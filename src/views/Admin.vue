@@ -56,9 +56,9 @@
                                 </router-link>
                             </li>
                             <li class="sidebar-item-left">
-                                <router-link to="/admin/profile">
+                                <router-link to="/admin/users">
                                     <i class="fa fa-user"></i>
-                                    <span>Profile</span>
+                                    <span>Users</span>
                                 </router-link>
                             </li>
                             <li class="sidebar-item-left">
@@ -87,7 +87,7 @@
 
             </nav>
             <!-- sidebar-content  -->
-            <main class="page-content">
+            <main class="page-content mt-0 pt-0">
                 <router-view/>
             </main>
             <!-- page-content" -->
