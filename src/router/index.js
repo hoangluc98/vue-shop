@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import Overview from "../views/Overview.vue";
-import Profile from "../views/Profile.vue";
+import Users from "../views/Users.vue";
 import Orders from "../views/Orders.vue";
 import Products from "../views/Products.vue";
 import LoginAdmin from "../views/LoginAdmin.vue";
@@ -32,9 +32,9 @@ const routes = [
         component: Overview,
       },
       {
-        path: "profile",
-        name: "Profile",
-        component: Profile,
+        path: "users",
+        name: "Users",
+        component: Users,
       },
       {
         path: "orders",
