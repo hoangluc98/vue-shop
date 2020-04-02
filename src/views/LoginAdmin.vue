@@ -1,9 +1,9 @@
 <template>
-    <div class="loginadmin"">
+    <div class="loginadmin">
         <div class="container">
             <div class="row d-flex justify-content-center rounded-lg" style="margin-top: 50px;">
                 <div class="col-md-4 shadow-lg p-4 mb-4 bg-white">
-                <h2>Login Admin</h2>
+                <h2 class="text-center">Login Admin</h2>
                 <div>
                     <div class="form-group">
                         <label for="email">Email:</label>
