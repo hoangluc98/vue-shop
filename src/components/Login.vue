@@ -19,13 +19,29 @@
 
                                 <h5 class="text-center">Login Please</h5>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" v-model="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                    <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                    <label for="input-email-login">Email address</label>
+                                    <input type="email" class="form-control" id="input-email-login" aria-describedby="emailHelp" placeholder="Enter email"
+                                        v-model.trim="$v.email.$model" :class="{
+                                            'is-invalid':$v.email.$error, 'is-valid':!$v.email.$invalid }">
+                                        <div class="valid-feedback">Email is valid!</div>
+                                        <div class="invalid-feedback">
+                                            <span v-if="!$v.email.required">Email is required.</span>
+                                        </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" @keyup.enter="login" v-model="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    <label for="input-password-login">Password</label>
+                                    <input type="password" @keyup.enter="login" class="form-control" id="input-password-login" placeholder="Password"
+                                        v-model.trim="$v.password.$model" :class="{
+                                            'is-invalid':$v.password.$error, 'is-valid':!$v.password.$invalid }">
+                                        <div class="valid-feedback">Password is valid!</div>
+                                        <div class="invalid-feedback">
+                                            <span v-if="!$v.password.required">Password is required.  </span>
+                                            <span v-if="!$v.password.minLength">Password must have at least {{
+                                                $v.password.$params.minLength.min}} letters.  </span>
+                                            <span v-if="!$v.password.check">Password is invalid. (E.g Aa@123456)  </span>
+                                            <span v-if="!$v.password.maxLength">Password must have most {{
+                                                $v.password.$params.maxLength.max}} letters.  </span>
+                                        </div>
                                 </div>
 
                                 <div class="form-group">
@@ -36,30 +52,68 @@
                             <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
                                 <h5 class="text-center">Create New Account</h5>
                                 <div class="form-group">
-                                    <label for="name">Your name</label>
-                                    <input type="text" v-model="name" class="form-control" id="name" placeholder="Your nice name">
+                                    <label for="input-name-register">Your name</label>
+                                    <input type="text" class="form-control" id="input-name-register" placeholder="Your nice name"
+                                        v-model.trim="$v.name.$model" :class="{
+                                            'is-invalid':$v.name.$error, 'is-valid':!$v.name.$invalid }">
+                                        <div class="valid-feedback">Your name is valid!</div>
+                                        <div class="invalid-feedback">
+                                            <span v-if="!$v.name.required">Name is required.</span>
+                                            <span v-if="!$v.name.minLength">Name must have at least {{
+                                                $v.name.$params.minLength.min}} letters.</span>
+                                            <span v-if="!$v.name.check">Name is invalid.</span>
+                                            <span v-if="!$v.name.maxLength">Name must have most {{
+                                                $v.name.$params.maxLength.max}} letters.</span>
+                                        </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">Email address</label>
-                                    <input type="email" v-model="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                    <label for="input-email-register">Email address</label>
+                                    <input type="email" class="form-control" id="input-email-register" aria-describedby="emailHelp" placeholder="Enter email"
+                                        v-model.trim="$v.email.$model" :class="{
+                                            'is-invalid':$v.email.$error, 'is-valid':!$v.email.$invalid }">
+                                        <div class="valid-feedback">Email is valid!</div>
+                                        <div class="invalid-feedback">
+                                            <span v-if="!$v.email.required">Email is required.</span>
+                                        </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" v-model="password" class="form-control" id="password" placeholder="Password">
+                                    <label for="input-password-register">Password</label>
+                                    <input type="password" class="form-control" id="input-password-register" placeholder="Password"
+                                        v-model.trim="$v.password.$model" :class="{
+                                            'is-invalid':$v.password.$error, 'is-valid':!$v.password.$invalid }">
+                                        <div class="valid-feedback">Password is valid!</div>
+                                        <div class="invalid-feedback">
+                                            <span v-if="!$v.password.required">Password is required.  </span>
+                                            <span v-if="!$v.password.minLength">Password must have at least {{
+                                                $v.password.$params.minLength.min}} letters.  </span>
+                                            <span v-if="!$v.password.check">Password is invalid. (E.g Aa@123456)  </span>
+                                            <span v-if="!$v.password.maxLength">Password must have most {{
+                                                $v.password.$params.maxLength.max}} letters.  </span>
+                                        </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone</label>
-                                    <input type="number" v-model="phone" class="form-control" id="phone" placeholder="Your nice phone">
-                                </div>
-                                <div class="form-group">
-                                    Gender: 
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadioInline1">Male</label>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="input-phone-register">Phone</label>
+                                        <input type="number" class="form-control" id="input-phone-register" placeholder="Your nice phone"
+                                            v-model.trim="$v.phone.$model" :class="{
+                                                'is-invalid':$v.phone.$error, 'is-valid':!$v.phone.$invalid }">
+                                            <div class="valid-feedback">Phone is valid!</div>
+                                            <div class="invalid-feedback">
+                                                <span v-if="!$v.phone.required">Phone is required.  </span>
+                                                <span v-if="!$v.phone.check">Phone is invalid.</span>
+                                            </div>
                                     </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadioInline2">Female</label>
+                                    <div class="form-group col-md-6">
+                                        Gender: 
+                                        <br>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="input-male-register" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="input-male-register">Male</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="input-female-register" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="input-female-register">Female</label>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -77,6 +131,8 @@
 
 <script>
     // @ is an alias to /src
+    import { Vuelidate } from "vuelidate";
+    import { required, minLength, maxLength, between, email } from "vuelidate/lib/validators";
 
     export default {
         name: "Login",
@@ -87,7 +143,56 @@
             return {
                 name: null,
                 email: null,
-                password: null
+                password: null,
+                phone: null,
+                genderMale: null,
+                genderFemale: null,
+            }
+        },
+        validations: {
+            name: {
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(20),
+                check (value) {
+                    if (value === '') return true;
+
+                    const name_regex = /^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/;
+
+                    return new Promise((resolve) => {
+                        resolve(name_regex.test(value));
+                    });
+                }
+            },
+            email: {
+                required,
+                email
+            },
+            password: {
+                required,
+                minLength: minLength(8),
+                maxLength: maxLength(20),
+                check (value) {
+                    if (value === '') return true;
+
+                    const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+
+                    return new Promise((resolve) => {
+                        resolve(password_regex.test(value));
+                    });
+                }
+            },
+            phone: {
+                required,
+                check (value) {
+                    if (value === '') return true;
+
+                    const phone_regex = /^(0)[0-9]{9,10}$/;
+
+                    return new Promise((resolve) => {
+                        resolve(phone_regex.test(value));
+                    });
+                }
             }
         },
         methods: {
