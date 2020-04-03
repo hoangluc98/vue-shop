@@ -21,26 +21,26 @@
                                 <div class="form-group">
                                     <label for="input-email-login">Email address</label>
                                     <input type="email" class="form-control" id="input-email-login" aria-describedby="emailHelp" placeholder="Enter email"
-                                        v-model.trim="$v.email.$model" :class="{
-                                            'is-invalid':$v.email.$error, 'is-valid':!$v.email.$invalid }">
+                                        v-model.trim="$v.emailLogin.$model" :class="{
+                                            'is-invalid':$v.emailLogin.$error, 'is-valid':!$v.emailLogin.$invalid }">
                                         <div class="valid-feedback">Email is valid!</div>
                                         <div class="invalid-feedback">
-                                            <span v-if="!$v.email.required">Email is required.</span>
+                                            <span v-if="!$v.emailLogin.required">Email is required.</span>
                                         </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="input-password-login">Password</label>
                                     <input type="password" @keyup.enter="login" class="form-control" id="input-password-login" placeholder="Password"
-                                        v-model.trim="$v.password.$model" :class="{
-                                            'is-invalid':$v.password.$error, 'is-valid':!$v.password.$invalid }">
+                                        v-model.trim="$v.passwordLogin.$model" :class="{
+                                            'is-invalid':$v.passwordLogin.$error, 'is-valid':!$v.passwordLogin.$invalid }">
                                         <div class="valid-feedback">Password is valid!</div>
                                         <div class="invalid-feedback">
-                                            <span v-if="!$v.password.required">Password is required.  </span>
-                                            <span v-if="!$v.password.minLength">Password must have at least {{
-                                                $v.password.$params.minLength.min}} letters.  </span>
-                                            <span v-if="!$v.password.check">Password is invalid. (E.g Aa@123456)  </span>
-                                            <span v-if="!$v.password.maxLength">Password must have most {{
-                                                $v.password.$params.maxLength.max}} letters.  </span>
+                                            <span v-if="!$v.passwordLogin.required">Password is required.  </span>
+                                            <span v-if="!$v.passwordLogin.minLength">Password must have at least {{
+                                                $v.passwordLogin.$params.minLength.min}} letters.  </span>
+                                            <span v-if="!$v.passwordLogin.check">Password is invalid. (E.g Aa@123456)  </span>
+                                            <span v-if="!$v.passwordLogin.maxLength">Password must have most {{
+                                                $v.passwordLogin.$params.maxLength.max}} letters.  </span>
                                         </div>
                                 </div>
 
@@ -69,26 +69,26 @@
                                 <div class="form-group">
                                     <label for="input-email-register">Email address</label>
                                     <input type="email" class="form-control" id="input-email-register" aria-describedby="emailHelp" placeholder="Enter email"
-                                        v-model.trim="$v.email.$model" :class="{
-                                            'is-invalid':$v.email.$error, 'is-valid':!$v.email.$invalid }">
+                                        v-model.trim="$v.emailRegister.$model" :class="{
+                                            'is-invalid':$v.emailRegister.$error, 'is-valid':!$v.emailRegister.$invalid }">
                                         <div class="valid-feedback">Email is valid!</div>
                                         <div class="invalid-feedback">
-                                            <span v-if="!$v.email.required">Email is required.</span>
+                                            <span v-if="!$v.emailRegister.required">Email is required.</span>
                                         </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="input-password-register">Password</label>
                                     <input type="password" class="form-control" id="input-password-register" placeholder="Password"
-                                        v-model.trim="$v.password.$model" :class="{
-                                            'is-invalid':$v.password.$error, 'is-valid':!$v.password.$invalid }">
+                                        v-model.trim="$v.passwordRegister.$model" :class="{
+                                            'is-invalid':$v.passwordRegister.$error, 'is-valid':!$v.passwordRegister.$invalid }">
                                         <div class="valid-feedback">Password is valid!</div>
                                         <div class="invalid-feedback">
-                                            <span v-if="!$v.password.required">Password is required.  </span>
-                                            <span v-if="!$v.password.minLength">Password must have at least {{
-                                                $v.password.$params.minLength.min}} letters.  </span>
-                                            <span v-if="!$v.password.check">Password is invalid. (E.g Aa@123456)  </span>
-                                            <span v-if="!$v.password.maxLength">Password must have most {{
-                                                $v.password.$params.maxLength.max}} letters.  </span>
+                                            <span v-if="!$v.passwordRegister.required">Password is required.  </span>
+                                            <span v-if="!$v.passwordRegister.minLength">Password must have at least {{
+                                                $v.passwordRegister.$params.minLength.min}} letters.  </span>
+                                            <span v-if="!$v.passwordRegister.check">Password is invalid. (E.g Aa@123456)  </span>
+                                            <span v-if="!$v.passwordRegister.maxLength">Password must have most {{
+                                                $v.passwordRegister.$params.maxLength.max}} letters.  </span>
                                         </div>
                                 </div>
                                 <div class="form-row">
@@ -142,13 +142,25 @@
         data() {
             return {
                 name: null,
-                email: null,
-                password: null,
+                emailLogin: null,
+                passwordLogin: null,
+                emailRegister: null,
+                passwordRegister: null,
                 phone: null,
                 genderMale: null,
                 genderFemale: null,
             }
         },
+        methods: {
+            login() {
+
+            },
+            register() {
+
+            }
+        },
+
+
         validations: {
             name: {
                 required,
@@ -164,11 +176,47 @@
                     });
                 }
             },
-            email: {
+            emailLogin: {
                 required,
                 email
             },
-            password: {
+            passwordLogin: {
+                required,
+                minLength: minLength(8),
+                maxLength: maxLength(20),
+                check (value) {
+                    if (value === '') return true;
+
+                    const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+
+                    return new Promise((resolve) => {
+                        resolve(password_regex.test(value));
+                    });
+                }
+            },
+            emailLogin: {
+                required,
+                email
+            },
+            passwordLogin: {
+                required,
+                minLength: minLength(8),
+                maxLength: maxLength(20),
+                check (value) {
+                    if (value === '') return true;
+
+                    const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+
+                    return new Promise((resolve) => {
+                        resolve(password_regex.test(value));
+                    });
+                }
+            },
+            emailRegister: {
+                required,
+                email
+            },
+            passwordRegister: {
                 required,
                 minLength: minLength(8),
                 maxLength: maxLength(20),
@@ -195,14 +243,6 @@
                 }
             }
         },
-        methods: {
-            login() {
-
-            },
-            register() {
-
-            }
-        }
     };
 </script>
 
