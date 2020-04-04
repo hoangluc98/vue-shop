@@ -4,22 +4,26 @@ const urlSignIn = "http://localhost:3000/auth/signin";
 const urlSignUp = "http://localhost:3000/auth/signup";
 
 class AuthService {
-    // Post Login
-    // static postLogin(username, password) {
-    //     return axios.post(urlSignIn, {
-    //         username,
-    //         password
-    //     });
-    // }
+  /**
+   * User login
+   * @param {string} email 
+   * @param {string} password 
+   */
+  static postLogin(email, password) {
+    return axios.post(urlSignIn, {
+      email: email,
+      password: password
+    });
+  }
 
-    /**
-     * 
-     * @param {Object} registerInfo 
-     */
-    static postRegister(registerInfo) {
-        console.log(registerInfo)
-        return axios.post(urlSignUp, registerInfo);
-    }
+  /**
+   * User register
+   * @param {Object} registerInfo 
+   */
+  static postRegister(registerInfo) {
+    console.log(registerInfo)
+    return axios.post(urlSignUp, registerInfo);
+  }
 }
 
 export default AuthService;
