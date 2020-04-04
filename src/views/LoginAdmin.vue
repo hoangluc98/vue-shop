@@ -40,9 +40,9 @@
         },
         methods: {
             async login() {
-                let res = await AuthService.postLogin(this.username, this.password);
-                console.log(res);
-                this.$router.replace('admin');
+                // let res = await AuthService.postLogin(this.username, this.password);
+                // console.log(res);
+                // this.$router.replace('admin');
             }
         }
     };
