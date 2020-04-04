@@ -23,7 +23,6 @@
                                     <input type="email" class="form-control" id="input-email-login" aria-describedby="emailHelp" placeholder="Enter email"
                                         v-model.trim="$v.emailLogin.$model" :class="{
                                             'is-invalid':$v.emailLogin.$error, 'is-valid':!$v.emailLogin.$invalid }">
-                                        <div class="valid-feedback">Email is valid!</div>
                                         <div class="invalid-feedback">
                                             <span v-if="!$v.emailLogin.required">Email is required.</span>
                                         </div>
@@ -33,7 +32,6 @@
                                     <input type="password" @keyup.enter="login" class="form-control" id="input-password-login" placeholder="Password"
                                         v-model.trim="$v.passwordLogin.$model" :class="{
                                             'is-invalid':$v.passwordLogin.$error, 'is-valid':!$v.passwordLogin.$invalid }">
-                                        <div class="valid-feedback">Password is valid!</div>
                                         <div class="invalid-feedback">
                                             <span v-if="!$v.passwordLogin.required">Password is required.  </span>
                                             <span v-if="!$v.passwordLogin.minLength">Password must have at least {{
@@ -154,8 +152,12 @@
             }
         },
         methods: {
-            login() {
-
+            async login() {
+                let res = await AuthService.postLogin(
+                    this.emailLogin,
+                    this.passwordLogin
+                );
+                console.log(res);
             },
             async register() {
                 this.registerInfo.gender = ($("#input-male-register").is(":checked")) ? $("#input-male-register").val() : $("#input-fmale-register").val();
@@ -170,7 +172,10 @@
                 });
                 if (res.status === 201) {
                     $('#login').modal('hide');
-                    this.$alertify.success('Register success');
+                    this.$alertify.success('Register success.');
+                } else {
+                    $('#login').modal('hide');
+                    this.$alertify.alert('Register failed.');
                 }
             }
         },
