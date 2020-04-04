@@ -3,6 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import jQuery from 'jquery';
 import Vuelidate from "vuelidate";
+import VueAlertify from 'vue-alertify';
+ 
+Vue.use(VueAlertify);
 Vue.use(Vuelidate);
 
 window.$ = window.jQuery = jQuery;

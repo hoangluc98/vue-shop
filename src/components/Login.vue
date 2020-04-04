@@ -54,16 +54,16 @@
                                 <div class="form-group">
                                     <label for="input-name-register">Your name</label>
                                     <input type="text" class="form-control" id="input-name-register" placeholder="Your nice name"
-                                        v-model.trim="$v.name.$model" :class="{
-                                            'is-invalid':$v.name.$error, 'is-valid':!$v.name.$invalid }">
-                                        <div class="valid-feedback">Your name is valid!</div>
+                                        v-model.trim="$v.username.$model" :class="{
+                                            'is-invalid':$v.username.$error, 'is-valid':!$v.username.$invalid }">
+                                        <div class="valid-feedback">Your username is valid!</div>
                                         <div class="invalid-feedback">
-                                            <span v-if="!$v.name.required">Name is required.</span>
-                                            <span v-if="!$v.name.minLength">Name must have at least {{
-                                                $v.name.$params.minLength.min}} letters.</span>
-                                            <span v-if="!$v.name.check">Name is invalid.</span>
-                                            <span v-if="!$v.name.maxLength">Name must have most {{
-                                                $v.name.$params.maxLength.max}} letters.</span>
+                                            <span v-if="!$v.username.required">Username is required.</span>
+                                            <span v-if="!$v.username.minLength">Username must have at least {{
+                                                $v.username.$params.minLength.min}} letters.</span>
+                                            <span v-if="!$v.username.check">Username is invalid.</span>
+                                            <span v-if="!$v.username.maxLength">Username must have most {{
+                                                $v.username.$params.maxLength.max}} letters.</span>
                                         </div>
                                 </div>
                                 <div class="form-group">
@@ -106,14 +106,14 @@
                                     <div class="form-group col-md-6">
                                         Gender: 
                                         <br>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="input-male-register" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="input-male-register">Male</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="input-female-register" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="input-female-register">Female</label>
-                                        </div>
+                                        <label class="radio-inline col-md-3">Nam
+                                            <input v-model="genderMale" id="input-male-register" type="radio" name="gender" value="male" required>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio-inline col-md-3">Nữ
+                                            <input v-model="genderFemale" id="input-fmale-register" type="radio" name="gender" value="female" required>
+                                            <span class="checkmark"></span>
+                                        </label>
                                     </div>
                                 </div>
 
@@ -133,6 +133,7 @@
     // @ is an alias to /src
     import { Vuelidate } from "vuelidate";
     import { required, minLength, maxLength, between, email } from "vuelidate/lib/validators";
+    import AuthService from "./../services/auth.service";
 
     export default {
         name: "Login",
@@ -141,7 +142,7 @@
         },
         data() {
             return {
-                name: null,
+                username: null,
                 emailLogin: null,
                 passwordLogin: null,
                 emailRegister: null,
@@ -149,20 +150,34 @@
                 phone: null,
                 genderMale: null,
                 genderFemale: null,
+                registerInfo: {}
             }
         },
         methods: {
             login() {
 
             },
-            register() {
+            async register() {
+                this.registerInfo.gender = ($("#input-male-register").is(":checked")) ? $("#input-male-register").val() : $("#input-fmale-register").val();
 
+                let res = await AuthService.postRegister({
+                    username: this.username,
+                    email: this.emailRegister,
+                    password: this.passwordRegister,
+                    phone: this.phone,
+                    gender: this.registerInfo.gender,
+                    role: "user"
+                });
+                if (res.status === 201) {
+                    $('#login').modal('hide');
+                    this.$alertify.success('Register success');
+                }
             }
         },
 
 
         validations: {
-            name: {
+            username: {
                 required,
                 minLength: minLength(3),
                 maxLength: maxLength(20),
