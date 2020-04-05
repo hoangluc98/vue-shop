@@ -1,7 +1,4 @@
-import axios from "axios";
-
-const urlSignIn = "http://localhost:3000/auth/signin";
-const urlSignUp = "http://localhost:3000/auth/signup";
+import { instance } from "./configAxiosDefault";
 
 class AuthService {
   /**
@@ -9,11 +6,14 @@ class AuthService {
    * @param {string} email 
    * @param {string} password 
    */
-  static postLogin(email, password) {
-    return axios.post(urlSignIn, {
+  static async postLogin(email, password) {
+    let res = await instance.post("/auth/signin", {
       email: email,
       password: password
     });
+    instance.defaults.headers.common['Authorization'] = `Bearer ${res.accessToken}`;
+
+    return res.status;
   }
 
   /**
@@ -22,7 +22,7 @@ class AuthService {
    */
   static postRegister(registerInfo) {
     console.log(registerInfo)
-    return axios.post(urlSignUp, registerInfo);
+    return instance.post("/auth/signup", registerInfo);
   }
 }
 
