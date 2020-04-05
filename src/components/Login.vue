@@ -153,12 +153,18 @@
         },
         methods: {
             async login() {
-                let res = await AuthService.postLogin(
+                let resStatus = await AuthService.postLogin(
                     this.emailLogin,
                     this.passwordLogin
                 );
-                console.log(res);
+
+                if (resStatus !== 201) {
+                    return this.$alertify.alert('Login failed.');
+                }
+                this.$router.go();
+                this.$alertify.success('Login success.');
             },
+
             async register() {
                 this.registerInfo.gender = ($("#input-male-register").is(":checked")) ? $("#input-male-register").val() : $("#input-fmale-register").val();
 
