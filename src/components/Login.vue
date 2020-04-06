@@ -105,11 +105,11 @@
                                         Gender: 
                                         <br>
                                         <label class="radio-inline col-md-3">Nam
-                                            <input v-model="genderMale" id="input-male-register" type="radio" name="gender" value="male" required>
+                                            <input v-model="gender" id="input-male-register" type="radio" name="gender" value="male" required>
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="radio-inline col-md-3">Nữ
-                                            <input v-model="genderFemale" id="input-fmale-register" type="radio" name="gender" value="female" required>
+                                            <input v-model="gender" id="input-fmale-register" type="radio" name="gender" value="female" required>
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
@@ -146,13 +146,18 @@
                 emailRegister: null,
                 passwordRegister: null,
                 phone: null,
-                genderMale: null,
-                genderFemale: null,
-                registerInfo: {}
+                gender: null,
             }
         },
         methods: {
             async login() {
+                if (!this.emailLogin || !this.passwordLogin) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'You must enter full information!',
+                    })
+                }
+
                 let resStatus = await AuthService.postLogin(
                     this.emailLogin,
                     this.passwordLogin
@@ -166,14 +171,22 @@
             },
 
             async register() {
-                this.registerInfo.gender = ($("#input-male-register").is(":checked")) ? $("#input-male-register").val() : $("#input-fmale-register").val();
+                if (    !this.username          || !this.emailRegister
+                    ||  !this.passwordRegister  || !this.phone
+                    ||  !this.gender
+                ) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'You must enter full information!',
+                    })
+                }
 
                 let res = await AuthService.postRegister({
                     username: this.username,
                     email: this.emailRegister,
                     password: this.passwordRegister,
                     phone: this.phone,
-                    gender: this.registerInfo.gender,
+                    gender: this.gender,
                     role: "user"
                 });
                 if (res.status === 201) {

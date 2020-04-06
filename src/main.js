@@ -15,6 +15,10 @@ import 'popper.js';
 import 'bootstrap';
 import './assets/app.scss';
 
+import Swal from 'sweetalert2';
+
+window.Swal = Swal;
+
 Vue.config.productionTip = false;
 
 Vue.component('Navbar', require('./components/Navbar.vue').default);
