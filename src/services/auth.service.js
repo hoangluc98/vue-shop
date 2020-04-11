@@ -13,7 +13,7 @@ class AuthService {
     });
     instance.defaults.headers.common['Authorization'] = `Bearer ${res.accessToken}`;
 
-    return res.status;
+    return res;
   }
 
   /**
@@ -21,8 +21,11 @@ class AuthService {
    * @param {Object} registerInfo 
    */
   static postRegister(registerInfo) {
-    console.log(registerInfo)
     return instance.post("/auth/signup", registerInfo);
+  }
+
+  static getCurrentUser() {
+    return instance.get("/auth/current-user");
   }
 }
 
