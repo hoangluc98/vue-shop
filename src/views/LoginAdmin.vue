@@ -77,7 +77,8 @@
                 this.$alertify.success('Login success.');
 
                 let currentUser = await AuthService.getCurrentUser();
-            }
+                await this.$store.dispatch('setCurrentUser', currentUser);
+            },
         },
 
         validations: {
