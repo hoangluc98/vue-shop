@@ -147,6 +147,7 @@
                 passwordRegister: null,
                 phone: null,
                 gender: null,
+                currentUser: null
             }
         },
         methods: {
@@ -158,16 +159,16 @@
                     })
                 }
 
-                let resStatus = await AuthService.postLogin(
+                let res = await AuthService.postLogin(
                     this.emailLogin,
                     this.passwordLogin
                 );
 
-                if (resStatus !== 201) {
+                if (res.status !== 201) {
                     return this.$alertify.alert('Login failed.');
                 }
-                this.$router.go();
-                this.$alertify.success('Login success.');
+                $('#login').modal('hide');
+                // this.$router.replace({ path: `/${res.data.accessToken}` });
             },
 
             async register() {
