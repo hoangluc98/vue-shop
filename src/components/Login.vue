@@ -153,19 +153,20 @@
         methods: {
             async login() {
                 if (!this.emailLogin || !this.passwordLogin) {
-                    Swal.fire({
+                    return Swal.fire({
                         icon: 'error',
                         text: 'You must enter full information!',
                     })
                 }
 
-                let res = await AuthService.postLogin(
-                    this.emailLogin,
-                    this.passwordLogin
-                );
-
-                if (res.status !== 201) {
-                    return this.$alertify.alert('Login failed.');
+                try {
+                    let res = await AuthService.postLogin(
+                        this.emailLogin,
+                        this.passwordLogin,
+                        "user"
+                    );
+                } catch (error) {
+                    return this.$alertify.warning('Login failed.');
                 }
                 $('#login').modal('hide');
                 // this.$router.replace({ path: `/${res.data.accessToken}` });

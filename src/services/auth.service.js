@@ -1,4 +1,4 @@
-import { instance } from "./configAxiosDefault";
+import { Api } from "./configAxiosDefault";
 
 class AuthService {
   /**
@@ -6,13 +6,20 @@ class AuthService {
    * @param {string} email 
    * @param {string} password 
    */
-  static async postLogin(email, password) {
-    let res = await instance.post("/auth/signin", {
+  static async postLogin(email, password, typeLogin) {
+    let typeUrl;
+    if (typeLogin === "admin") {
+      typeUrl = "/auth/signin-admin";
+    } else if (typeLogin === "user") {
+      typeUrl = "/auth/signin";
+    }
+
+    let res = await Api.post(typeUrl, {
       email: email,
       password: password
     });
-    instance.defaults.headers.common['Authorization'] = `Bearer ${res.accessToken}`;
-
+    
+    Api.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
     return res;
   }
 
@@ -21,11 +28,12 @@ class AuthService {
    * @param {Object} registerInfo 
    */
   static postRegister(registerInfo) {
-    return instance.post("/auth/signup", registerInfo);
+    return Api.post("/auth/signup", registerInfo);
   }
 
-  static getCurrentUser() {
-    return instance.get("/auth/current-user");
+  static async getCurrentUser() {
+    let res = await Api.get("/auth/current-user");
+    return res.data;
   }
 }
 

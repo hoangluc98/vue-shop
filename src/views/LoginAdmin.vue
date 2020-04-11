@@ -6,12 +6,27 @@
                 <h2 class="text-center">Login Admin</h2>
                 <div>
                     <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="text" v-model="username" class="form-control" id="email" placeholder="Enter email" name="email">
+                        <label for="input-email-login">Email address</label>
+                        <input type="email" class="form-control" id="input-email-login" aria-describedby="emailHelp" placeholder="Enter email"
+                            v-model.trim="$v.email.$model" :class="{
+                                'is-invalid':$v.email.$error, 'is-valid':!$v.email.$invalid }">
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.email.required">Email is required.</span>
+                            </div>
                     </div>
                     <div class="form-group">
-                        <label for="pwd">Password:</label>
-                        <input type="password" v-model="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
+                        <label for="input-password-login">Password</label>
+                        <input type="password" @keyup.enter="login" class="form-control" id="input-password-login" placeholder="Password"
+                            v-model.trim="$v.password.$model" :class="{
+                                'is-invalid':$v.password.$error, 'is-valid':!$v.password.$invalid }">
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.password.required">Password is required.  </span>
+                                <span v-if="!$v.password.minLength">Password must have at least {{
+                                    $v.password.$params.minLength.min}} letters.  </span>
+                                <span v-if="!$v.password.check">Password is invalid. (E.g Aa@123456)  </span>
+                                <span v-if="!$v.password.maxLength">Password must have most {{
+                                    $v.password.$params.maxLength.max}} letters.  </span>
+                            </div>
                     </div>
                     <div class="form-group form-check ">
                         <label class="form-check-label">
@@ -28,22 +43,62 @@
 
 <script>
     // @ is an alias to /src
-    import AuthService from "../services/auth.service";
+    import { Vuelidate } from "vuelidate";
+    import { required, minLength, maxLength, between, email } from "vuelidate/lib/validators";
+    import AuthService from "./../services/auth.service";
 
     export default {
         name: "loginadmin",
         data() {
             return {
-                username: null,
+                email: null,
                 password: null,
             }
         },
         methods: {
             async login() {
-                // let res = await AuthService.postLogin(this.username, this.password);
-                // console.log(res);
-                // this.$router.replace('admin');
+                if (!this.email || !this.password) {
+                    return Swal.fire({
+                        icon: 'error',
+                        text: 'You must enter full information!',
+                    })
+                }
+
+                try {
+                    await AuthService.postLogin(
+                        this.email,
+                        this.password,
+                        "admin"
+                    );
+                } catch (error) {
+                    return this.$alertify.warning('Login failed.');
+                }
+                this.$router.replace('admin');
+                this.$alertify.success('Login success.');
+
+                let currentUser = await AuthService.getCurrentUser();
             }
-        }
+        },
+
+        validations: {
+            email: {
+                required,
+                email
+            },
+            password: {
+                required,
+                minLength: minLength(8),
+                maxLength: maxLength(20),
+                check (value) {
+                    if (value === '') return true;
+
+                    const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+
+                    return new Promise((resolve) => {
+                        resolve(password_regex.test(value));
+                    });
+                }
+            }
+        },
     };
 </script>
