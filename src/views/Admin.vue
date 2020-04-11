@@ -1,14 +1,14 @@
 <template>
     <div class="admin">
         <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
-            <a id="show-sidebar" @click="closeMenu" class="btn btn-sm btn-dark" href="#">
+            <a id="show-sidebar" @click="closeMenu" class="btn btn-sm btn-dark" href="javascript:void(0)">
                 <i class="fas fa-bars"></i>
             </a>
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content">
                     <!-- sidebar-brand  -->
                     <div class="sidebar-item sidebar-brand">
-                        <a href="#">Vue Shop</a>
+                        <a href="javascript:void(0)">Vue Shop</a>
                         <div id="close-sidebar" @click="closeMenu">
                             <i class="fas fa-times"></i>
                         </div>
@@ -19,9 +19,7 @@
                             <img class="img-responsive img-rounded" src="/img/user.png" alt="User picture">
                         </div>
                         <div class="user-info">
-                            <span class="user-name">Jhon
-                            <strong>Smith</strong>
-                        </span>
+                            <span class="user-name"></span>
                             <span class="user-role">Administrator</span>
                             <span class="user-status">
                             <i class="fa fa-circle"></i>
@@ -99,13 +97,22 @@
 
 <script>
     // @ is an alias to /src
-    // import $ from "jquery";
+    import AuthService from "./../services/auth.service";
+
     export default {
         name: "admin",
+        data() {
+            return {
+                
+            }
+        },
         methods: {
             closeMenu() {
                 $(".page-wrapper").toggleClass("toggled");
             }
+        },
+        async getCurrentUser() {
+            let user = await getCurrentUser();
         }
     };
 </script>
