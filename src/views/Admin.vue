@@ -19,8 +19,8 @@
                             <img class="img-responsive img-rounded" src="/img/user.png" alt="User picture">
                         </div>
                         <div class="user-info">
-                            <span class="user-name"></span>
-                            <span class="user-role">Administrator</span>
+                            <span class="user-name">{{ currentUser.username }}</span>
+                            <span class="user-role">{{ currentUser.role }}</span>
                             <span class="user-status">
                             <i class="fa fa-circle"></i>
                             <span>Online</span>
@@ -73,10 +73,10 @@
                             </li>
 
                             <li class="sidebar-item-left">
-                                <router-link to="#">
+                                <a href="javascript:void(0)" @click="logout()">
                                     <i class="fa fa-power-off"></i>
                                     <span>Logout</span>
-                                </router-link>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -98,9 +98,16 @@
 <script>
     // @ is an alias to /src
     import AuthService from "./../services/auth.service";
+    import { mapState } from 'vuex';
 
     export default {
         name: "admin",
+        mounted(){
+            this.$store.dispatch('loadCurrentUser');
+        },
+        computed: {
+            ...mapState(['currentUser'])
+        },
         data() {
             return {
                 
@@ -109,10 +116,11 @@
         methods: {
             closeMenu() {
                 $(".page-wrapper").toggleClass("toggled");
+            },
+            logout() {
+                this.$store.dispatch("removeCurrentUser");
+                this.$router.replace('login-admin');
             }
-        },
-        async getCurrentUser() {
-            let user = await getCurrentUser();
         }
     };
 </script>

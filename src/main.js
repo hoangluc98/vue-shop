@@ -21,10 +21,13 @@ window.Swal = Swal;
 
 Vue.config.productionTip = false;
 
+import store from './store/index';
+
 Vue.component('Navbar', require('./components/Navbar.vue').default);
 Vue.component('Footer', require('./components/Footer.vue').default);
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

@@ -20,12 +20,27 @@ const routes = [
     path: "/login-admin",
     name: "LoginAdmin",
     component: LoginAdmin,
+    beforeEnter(to, from, next) {
+      let currentUser = JSON.parse(window.localStorage.currentUser);
+      if(!currentUser) {
+        next();
+      } else {
+        next("/admin");
+      }
+    },
   },
   {
     path: "/admin",
     name: "Admin",
     component: Admin,
-    meta: { requiresAuth: true },
+    beforeEnter(to, from, next) {
+      let currentUser = JSON.parse(window.localStorage.currentUser);
+      if(currentUser && currentUser.role === "admin") {
+        next();
+      } else {
+        next("/login-admin");
+      }
+    },
     children: [
       {
         path: "overview",
