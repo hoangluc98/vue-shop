@@ -183,21 +183,21 @@
                     })
                 }
 
-                let res = await AuthService.postRegister({
-                    username: this.username,
-                    email: this.emailRegister,
-                    password: this.passwordRegister,
-                    phone: this.phone,
-                    gender: this.gender,
-                    role: "user"
-                });
-                if (res.status === 201) {
+                try {
+                    await AuthService.postRegister({
+                        username: this.username,
+                        email: this.emailRegister,
+                        password: this.passwordRegister,
+                        phone: this.phone,
+                        gender: this.gender
+                    });
+                } catch (error) {
                     $('#login').modal('hide');
-                    this.$alertify.success('Register success.');
-                } else {
-                    $('#login').modal('hide');
-                    this.$alertify.alert('Register failed.');
+                    this.$alertify.warning('Register failed.');
+                    return;
                 }
+                $('#login').modal('hide');
+                this.$alertify.success('Register success.');
             }
         },
 
