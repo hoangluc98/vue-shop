@@ -73,11 +73,11 @@
                 } catch (error) {
                     return this.$alertify.warning('Login failed.');
                 }
-                this.$router.replace('admin');
-                this.$alertify.success('Login success.');
-
                 let currentUser = await AuthService.getCurrentUser();
                 await this.$store.dispatch('setCurrentUser', currentUser);
+
+                await this.$router.replace('admin');
+                this.$alertify.success('Login success.');
             },
         },
 
