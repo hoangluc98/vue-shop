@@ -73,7 +73,7 @@
                             </li>
 
                             <li class="sidebar-item-left">
-                                <a href="javascript:void(0)" @click="logout()">
+                                <a href="javascript:void(0)" @click="logout">
                                     <i class="fa fa-power-off"></i>
                                     <span>Logout</span>
                                 </a>
@@ -117,9 +117,9 @@
             closeMenu() {
                 $(".page-wrapper").toggleClass("toggled");
             },
-            logout() {
-                this.$store.dispatch("removeCurrentUser");
-                this.$router.replace('login-admin');
+            async logout() {
+                await this.$store.dispatch("removeCurrentUser");
+                await this.$router.replace('login-admin');
             }
         }
     };
