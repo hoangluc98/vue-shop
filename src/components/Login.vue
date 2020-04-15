@@ -131,7 +131,7 @@
     // @ is an alias to /src
     import { Vuelidate } from "vuelidate";
     import { required, minLength, maxLength, between, email } from "vuelidate/lib/validators";
-    import AuthService from "./../services/auth.service";
+    import { authService } from "./../services/index";
 
     export default {
         name: "Login",
@@ -160,7 +160,7 @@
                 }
 
                 try {
-                    let res = await AuthService.postLogin(
+                    let res = await authService.postLogin(
                         this.emailLogin,
                         this.passwordLogin,
                         "user"
@@ -184,7 +184,7 @@
                 }
 
                 try {
-                    await AuthService.postRegister({
+                    await authService.postRegister({
                         username: this.username,
                         email: this.emailRegister,
                         password: this.passwordRegister,

@@ -45,7 +45,7 @@
     // @ is an alias to /src
     import { Vuelidate } from "vuelidate";
     import { required, minLength, maxLength, between, email } from "vuelidate/lib/validators";
-    import AuthService from "./../services/auth.service";
+    import { authService } from "./../services/index";
 
     export default {
         name: "loginadmin",
@@ -65,7 +65,7 @@
                 }
 
                 try {
-                    await AuthService.postLogin(
+                    await authService.postLogin(
                         this.email,
                         this.password,
                         "admin"
@@ -73,7 +73,7 @@
                 } catch (error) {
                     return this.$alertify.warning('Login failed.');
                 }
-                let currentUser = await AuthService.getCurrentUser();
+                let currentUser = await authService.getCurrentUser();
                 await this.$store.dispatch('setCurrentUser', currentUser);
 
                 await this.$router.replace('admin');
