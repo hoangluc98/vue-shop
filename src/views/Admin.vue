@@ -97,7 +97,6 @@
 
 <script>
     // @ is an alias to /src
-    import AuthService from "./../services/auth.service";
     import { mapState } from 'vuex';
 
     export default {
@@ -119,7 +118,7 @@
             },
             async logout() {
                 await this.$store.dispatch("removeCurrentUser");
-                await this.$router.replace('login-admin');
+                await this.$router.replace('/login-admin');
             }
         }
     };

@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentUser: {}
+    currentUser: {},
+    accessToken: {}
   },
   mutations: {
     DELETE_CURRENT_USER(state) {
@@ -15,6 +16,14 @@ export default new Vuex.Store({
     SET_CURRENT_USER(state, user) {
       state.currentUser = user;
       window.localStorage.currentUser = JSON.stringify(user);
+    },
+    DELETE_TOKEN(state) {
+      state.accessToken = {}
+      window.localStorage.accessToken = JSON.stringify({});
+    },
+    SET_TOKEN(state, token) {
+      state.accessToken = token;
+      window.localStorage.accessToken = JSON.stringify(token);
     },
   },
   actions: {
@@ -27,6 +36,12 @@ export default new Vuex.Store({
     },
     setCurrentUser({commit}, user) {
       commit('SET_CURRENT_USER', user);
+    },
+    removeAccessToken({commit}) {
+      commit('DELETE_TOKEN');
+    },
+    setAccessToken({commit}, token) {
+      commit('SET_TOKEN', token);
     }
   },
   modules: {},

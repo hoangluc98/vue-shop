@@ -20,6 +20,7 @@ class AuthService {
     });
     
     Api.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
+    localStorage.setItem('accessToken', res.data.accessToken);
     return res;
   }
 

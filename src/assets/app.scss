@@ -26,3 +26,26 @@ body{
   }
 
 }
+a.action {
+  padding: 5px 10px;
+  border: 1px solid #999;
+  font-size: 12px;
+  border-radius: 5px;
+}
+#seting-profile {
+  margin-top: 7px;
+}
+
+#seting-profile .avatar {
+  width: 100px;
+  height: 100px;
+}
+
+.text-label {
+  text-align: right;
+  font-weight: bold;
+}
+
+.nav-tabs>li>a {
+  color: #555;
+}
