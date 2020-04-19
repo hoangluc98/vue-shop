@@ -4,12 +4,13 @@ import router from "./router";
 import jQuery from 'jquery';
 import Vuelidate from "vuelidate";
 import VueAlertify from 'vue-alertify';
-
+import alertify from 'alertifyjs';
  
 Vue.use(VueAlertify);
 Vue.use(Vuelidate);
 
 window.$ = window.jQuery = jQuery;
+window.alertify = alertify;
 
 import 'popper.js';
 import 'bootstrap';

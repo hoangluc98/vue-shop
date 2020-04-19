@@ -4,9 +4,12 @@ let accessToken = localStorage.getItem('accessToken');
 Api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
 class UserService {
-  static async getUsers() {
-    let res = await Api.get("/users");
-    return res.data;
+  static getUsers() {
+    return Api.get("/users");
+  }
+
+  static uploadUsers(formData) {
+    return Api.post("/users", formData);
   }
 
   static deleteUser(id) {
