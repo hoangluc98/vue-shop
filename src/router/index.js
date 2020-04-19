@@ -22,7 +22,7 @@ const routes = [
     component: LoginAdmin,
     beforeEnter(to, from, next) {
       let currentUser = JSON.parse(window.localStorage.currentUser);
-      if(Object.keys(currentUser).length <= 0) {
+      if(Object.keys(currentUser).length == 0) {
         next();
       } else {
         next("/admin");
@@ -35,7 +35,7 @@ const routes = [
     component: Admin,
     beforeEnter(to, from, next) {
       let currentUser = JSON.parse(window.localStorage.currentUser);
-      if (!Object.keys(currentUser).length) {
+      if (Object.keys(currentUser).length == 0) {
         next("/login-admin");
       } else if (currentUser.role === "admin") {
         next();
