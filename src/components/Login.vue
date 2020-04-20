@@ -235,24 +235,6 @@
                     });
                 }
             },
-            emailLogin: {
-                required,
-                email
-            },
-            passwordLogin: {
-                required,
-                minLength: minLength(8),
-                maxLength: maxLength(20),
-                check (value) {
-                    if (value === '') return true;
-
-                    const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
-
-                    return new Promise((resolve) => {
-                        resolve(password_regex.test(value));
-                    });
-                }
-            },
             emailRegister: {
                 required,
                 email
