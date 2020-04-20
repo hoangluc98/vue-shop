@@ -82,19 +82,47 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 control-label text-label">Email:</label>
                                             <div class="col-md-8">
-                                                <input id="input-change-email" v-model="userModal.email" class="form-control" type="email" name="username" >
+                                                <input id="input-change-email" class="form-control" type="email" name="username" 
+                                                    v-model.trim="$v.userModal.email.$model" :class="{
+                                                        'is-invalid':$v.userModal.email.$error, 'is-valid':!$v.userModal.email.$invalid }">
+                                                    <div class="valid-feedback">Email is valid!</div>
+                                                    <div class="invalid-feedback">
+                                                        <span v-if="!$v.userModal.email.required">Email is required.</span>
+                                                    </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 control-label text-label">Password:</label>
                                             <div class="col-md-8">
-                                                <input id="input-change-password" v-model="userModal.password" class="form-control" type="password" name="username" >
+                                                <input id="input-change-password" class="form-control" type="password" name="username" 
+                                                    v-model.trim="$v.userModal.password.$model" :class="{
+                                                        'is-invalid':$v.userModal.password.$error, 'is-valid':!$v.userModal.password.$invalid }">
+                                                    <div class="valid-feedback">Password is valid!</div>
+                                                    <div class="invalid-feedback">
+                                                        <span v-if="!$v.userModal.password.required">Password is required.  </span>
+                                                        <span v-if="!$v.userModal.password.minLength">Password must have at least {{
+                                                            $v.userModal.password.$params.minLength.min}} letters.  </span>
+                                                        <span v-if="!$v.userModal.password.check">Password is invalid. (E.g Aa@123456)  </span>
+                                                        <span v-if="!$v.userModal.password.maxLength">Password must have most {{
+                                                            $v.userModal.password.$params.maxLength.max}} letters.  </span>
+                                                    </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 control-label text-label">Username:</label>
                                             <div class="col-md-8">
-                                                <input id="input-change-username" v-model="userModal.username" class="form-control" type="text" name="username" >
+                                                <input id="input-change-username" class="form-control" type="text" name="username"
+                                                    v-model.trim="$v.userModal.username.$model" :class="{
+                                                        'is-invalid':$v.userModal.username.$error, 'is-valid':!$v.userModal.username.$invalid }">
+                                                    <div class="valid-feedback">Your username is valid!</div>
+                                                    <div class="invalid-feedback">
+                                                        <span v-if="!$v.userModal.username.required">Username is required.</span>
+                                                        <span v-if="!$v.userModal.username.minLength">Username must have at least {{
+                                                            $v.userModal.username.$params.minLength.min}} letters.</span>
+                                                        <span v-if="!$v.userModal.username.check">Username is invalid.</span>
+                                                        <span v-if="!$v.userModal.username.maxLength">Username must have most {{
+                                                            $v.userModal.username.$params.maxLength.max}} letters.</span>
+                                                    </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -122,7 +150,14 @@
                                         <div class="form-group row">
                                             <label class="col-lg-3 control-label text-label">Phone:</label>
                                             <div class="col-lg-8">
-                                                <input id="input-change-phone" v-model="userModal.phone" class="form-control" type="text" name="phone" >
+                                                <input id="input-change-phone" class="form-control" type="text" name="phone" 
+                                                    v-model.trim="$v.userModal.phone.$model" :class="{
+                                                        'is-invalid':$v.userModal.phone.$error, 'is-valid':!$v.userModal.phone.$invalid }">
+                                                    <div class="valid-feedback">Phone is valid!</div>
+                                                    <div class="invalid-feedback">
+                                                        <span v-if="!$v.userModal.phone.required">Phone is required.  </span>
+                                                        <span v-if="!$v.userModal.phone.check">Phone is invalid.</span>
+                                                    </div>
                                             </div>
                                         </div>
                                     </div>
@@ -144,6 +179,8 @@
 
 <script>
     // @ is an alias to /src
+    import { Vuelidate } from "vuelidate";
+    import { required, minLength, maxLength, between, email } from "vuelidate/lib/validators";
     import { userService } from "./../services/index";
 
     export default {
@@ -169,15 +206,26 @@
         },
         methods: {
             addNew() {
-                this.userModal = {};
+                this.userModal = {
+                    username: '',
+                    email: '',
+                    password: '',
+                    phone: ''
+                };
                 this.avatar = '/img/user.png';
                 this.modal = 'new';
                 $('#input-change-email').prop('readonly', false);
                 $('#modal-user').modal('show');
             },
             editUser(doc, index) {
-                this.userModal = {};
-                Object.assign(this.userModal, doc);
+                this.userModal = {
+                    email: doc.email,
+                    username: doc.username,
+                    phone: doc.phone,
+                    avatar: doc.avatar,
+                    role: doc.role
+                }
+
                 this.avatar = this.userModal.avatar;
                 this.userModal.role == "male" ? $("#input-change-gender-male").prop("checked", true) : $("#input-change-gender-female").prop("checked", true);
                 this.modal = 'edit';
@@ -269,6 +317,55 @@
                 $('#modal-user').modal('hide');
                 alertify.success('Upload user success');
             }
-        }
+        },
+
+        validations: {
+            userModal: {
+                username: {
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(20),
+                    check (value) {
+                        if (value === '') return true;
+
+                        const name_regex = /^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/;
+
+                        return new Promise((resolve) => {
+                            resolve(name_regex.test(value));
+                        });
+                    }
+                },
+                email: {
+                    required,
+                    email
+                },
+                password: {
+                    required,
+                    minLength: minLength(8),
+                    maxLength: maxLength(20),
+                    check (value) {
+                        if (value === '') return true;
+
+                        const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+
+                        return new Promise((resolve) => {
+                            resolve(password_regex.test(value));
+                        });
+                    }
+                },
+                phone: {
+                    required,
+                    check (value) {
+                        if (value === '') return true;
+
+                        const phone_regex = /^(0)[0-9]{9,10}$/;
+
+                        return new Promise((resolve) => {
+                            resolve(phone_regex.test(value));
+                        });
+                    }
+                }
+            }
+        },
     };
 </script>
